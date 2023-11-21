@@ -1,0 +1,43 @@
+version: "3"
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    command: [ "npm", "run", "start:server" ]
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      DB_HOST: 35.75.89.203
+      DB_PORT: 3306
+      DB_NAME: nhaannhien
+      DB_USERNAME: root
+      DB_PASSWORD: 123456@abcdef!
+    networks:
+      - nhaannhien
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "npm", "run", "start:worker" ]
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      DB_HOST: 35.75.89.203
+      DB_PORT: 3306
+      DB_NAME: nhaannhien
+      DB_USERNAME: root
+      DB_PASSWORD: 123456@abcdef!
+    networks:
+      - nhaannhien
+
+networks:
+  nhaannhien:
+    driver: bridge
+volumes:
+  nhaannhien:
+    external: true
